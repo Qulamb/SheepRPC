@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 @AllArgsConstructor
 public class ClientProxy implements InvocationHandler {
-    private SimpleRPCClient simpleRPCClient;
+    private NettyRPCClient nettyRPCClient;
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //构建request
@@ -20,7 +20,7 @@ public class ClientProxy implements InvocationHandler {
                 .paramsTypes(method.getParameterTypes())
                 .build();
         //将request发送到服务端
-        RPCResponse response = simpleRPCClient.sendRequest(request);
+        RPCResponse response = nettyRPCClient.sendRequest(request);
         return response.getData();
     }
 

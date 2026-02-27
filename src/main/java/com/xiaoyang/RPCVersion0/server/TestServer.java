@@ -15,7 +15,8 @@ public class TestServer {
         serviceProvider.provideServiceInterface(userService);
         serviceProvider.provideServiceInterface(blogService);
 
-        SimpleRPCServer RPCServer = new SimpleRPCServer(serviceProvider.getInterfaceProvider());
-        RPCServer.start(8899);
+        //SimpleRPCServer RPCServer = new SimpleRPCServer(serviceProvider.getInterfaceProvider());
+        NettyRPCServer rpcServer = new NettyRPCServer(serviceProvider);
+        rpcServer.start(8899);
     }
 }
