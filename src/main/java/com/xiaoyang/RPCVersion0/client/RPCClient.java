@@ -1,6 +1,8 @@
 package com.xiaoyang.RPCVersion0.client;
 
 import com.xiaoyang.RPCVersion0.common.Blog;
+import com.xiaoyang.RPCVersion0.common.RPCRequest;
+import com.xiaoyang.RPCVersion0.common.RPCResponse;
 import com.xiaoyang.RPCVersion0.common.User;
 import com.xiaoyang.RPCVersion0.service.BlogService;
 import com.xiaoyang.RPCVersion0.service.UserService;
@@ -11,8 +13,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Random;
 //客户端
-public class RPCClient {
-    public static void main(String[] args){
+public interface RPCClient {
+    RPCResponse sendRequest(RPCRequest request);
+
+    /*public static void main(String[] args){
         ClientProxy clientProxy = new ClientProxy("127.0.0.1", 8899);
         //获得UserService的代理对象
         UserService proxy = clientProxy.getProxy(UserService.class);
@@ -32,5 +36,5 @@ public class RPCClient {
         BlogService blogService = clientProxy.getProxy(BlogService.class);
         Blog blogById = blogService.getBlogById(1000);
         System.out.println("从服务端得到的blog为：" + blogById);
-    }
+    }*/
 }

@@ -4,9 +4,8 @@
 手写RPC框架
 
 
-
-![Version1流程图](%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260227124030_102_158.jpg)
 Version1
+![Version1流程图](%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260227124030_102_158.jpg)
 
 RPCClient：模拟客户端远程调用服务端的方法
 
@@ -16,8 +15,22 @@ ClientProxy：代理类，实现了返回代理对象的方法和代理填充req
 
 IOClient：向服务端发送request并获取返回值response
 
-![Version2流程图](img.png)
+痛点： 
+
+1.服务端直接绑定的是UserService服务，如果有多个服务就要写多遍重复代码，代码复用性低。 
+
+2.BIO的方式性能比较低
+
+3.服务端的功能太复杂：监听，处理。最好是拆分成单一功能
+
+
+
+
+
+
+
 Version2
+![Version2流程图](img.png)
 
 RPCServer：从类抽象成了接口，以后的服务端实现这个接口即可
 
@@ -28,6 +41,8 @@ SimpleRPCServer:简单实现了RPCServer，负责BIO监听，来一个任务就n
 TestServer:服务端，做一些提前准备的工作（调用映射关系保存的函数等）
 
 WorkThread:根据映射关系，通过反射调用服务端的方法
+
+痛点：BIO传输性能低，可以进行优化
 
 
 
