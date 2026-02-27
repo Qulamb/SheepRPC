@@ -6,7 +6,11 @@
 
 
 ![Version1流程图](%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20260227124030_102_158.jpg)
-
+Version1
+RPCClient：模拟客户端远程调用服务端的方法
+RPCServer：模拟服务端，接收request并通过反射动态调用接收到的固定服务的方法
+ClientProxy：代理类，实现了返回代理对象的方法和代理填充request并调用IOClient的方法
+IOClient：向服务端发送request并获取返回值response
 
 
 
