@@ -5,7 +5,7 @@ import com.xiaoyang.RPCVersion0.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
-
+//测试服务端
 public class TestServer {
     public static void main(String[] args) {
         UserService userService = new UserServiceImpl();
