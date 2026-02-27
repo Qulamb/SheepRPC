@@ -16,7 +16,18 @@ ClientProxy：代理类，实现了返回代理对象的方法和代理填充req
 
 IOClient：向服务端发送request并获取返回值response
 
+![Version2流程图](img.png)
+Version2
 
+RPCServer：从类抽象成了接口，以后的服务端实现这个接口即可
+
+ServiceProvider:保存接口对应方法与实例的映射关系，便于后续通过反射调用不同服务的方法
+
+SimpleRPCServer:简单实现了RPCServer，负责BIO监听，来一个任务就new一个线程去执行.处理任务的工作见WorkThread中
+
+TestServer:服务端，做一些提前准备的工作（调用映射关系保存的函数等）
+
+WorkThread:根据映射关系，通过反射调用服务端的方法
 
 
 
