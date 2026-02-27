@@ -11,8 +11,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+public interface RPCServer {
+    void start(int port);
+    void stop();
+}
+
 //服务端
-public class RPCServer {
+/*public class RPCServer {
     public static void main(String[] args){
         UserServiceImpl userService = new UserServiceImpl();
         try {
@@ -47,4 +53,4 @@ public class RPCServer {
             System.out.println("服务器启动失败");
         }
     }
-}
+}*/
