@@ -13,7 +13,7 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 
 /**
- * 同样的与服务端解码和编码格式
+ *每个新建立的客户端连接都会触发一次这个方法（因为在handler内）
  */
 public class NettyClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
