@@ -2,6 +2,7 @@ package com.xiaoyang.Client.serviceCenter;
 
 import com.xiaoyang.Client.cache.serviceCache;
 import com.xiaoyang.Client.serviceCenter.ZKWacher.watchZK;
+import com.xiaoyang.Client.serviceCenter.loadbalance.ConsistencyHashBalance;
 import com.xiaoyang.Client.serviceCenter.loadbalance.LoadBalance;
 import com.xiaoyang.Client.serviceCenter.loadbalance.RoundLoadBalance;
 import org.apache.curator.RetryPolicy;
@@ -19,7 +20,7 @@ public class ZkServiceRegister implements ServiceRegister {
     private serviceCache cache;
     // zookeeper根路径节点
     private static final String ROOT_PATH = "MyRPC";
-    private LoadBalance loadBalance=new RoundLoadBalance();
+    private LoadBalance loadBalance=new ConsistencyHashBalance();
     // 这里负责zookeeper客户端的初始化，并与zookeeper服务端建立连接
     public ZkServiceRegister() throws InterruptedException {
         // 指数时间重试
