@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 //专门负责网络传输
 @AllArgsConstructor
@@ -22,7 +24,6 @@ public class SimpleRPCClient implements RPCClient{
 
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
-
             System.out.println(request);
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();

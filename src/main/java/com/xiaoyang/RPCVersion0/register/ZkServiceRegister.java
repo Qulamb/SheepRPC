@@ -1,5 +1,7 @@
 package com.xiaoyang.RPCVersion0.register;
 
+import com.xiaoyang.RPCVersion0.loadbalance.LoadBalance;
+import com.xiaoyang.RPCVersion0.loadbalance.RoundLoadBalance;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -14,7 +16,7 @@ public class ZkServiceRegister implements ServiceRegister{
     private CuratorFramework client;
     // zookeeper根路径节点
     private static final String ROOT_PATH = "MyRPC";
-
+    private LoadBalance loadBalance=new RoundLoadBalance();
     // 这里负责zookeeper客户端的初始化，并与zookeeper服务端建立连接
     public ZkServiceRegister(){
         // 指数时间重试
@@ -50,8 +52,7 @@ public class ZkServiceRegister implements ServiceRegister{
     public InetSocketAddress serviceDiscovery(String serviceName) {
         try {
             List<String> strings = client.getChildren().forPath("/" + serviceName);
-            // 这里默认用的第一个，后面加负载均衡
-            String string = strings.get(0);
+            String string = loadBalance.balance(strings);
             return parseAddress(string);
         } catch (Exception e) {
             e.printStackTrace();
