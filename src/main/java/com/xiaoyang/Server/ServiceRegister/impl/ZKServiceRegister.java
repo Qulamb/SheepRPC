@@ -1,10 +1,6 @@
-package com.xiaoyang.Client.serviceCenter;
+package com.xiaoyang.Server.ServiceRegister.impl;
 
-import com.xiaoyang.Client.cache.serviceCache;
-import com.xiaoyang.Client.serviceCenter.ZKWacher.watchZK;
-import com.xiaoyang.Client.serviceCenter.loadbalance.ConsistencyHashBalance;
-import com.xiaoyang.Client.serviceCenter.loadbalance.LoadBalance;
-import com.xiaoyang.Client.serviceCenter.loadbalance.RoundLoadBalance;
+import com.xiaoyang.Server.ServiceRegister.ServiceRegister;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -12,17 +8,16 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 
 import java.net.InetSocketAddress;
-import java.util.List;
 
-public class ZkServiceRegister implements ServiceRegister {
+public class ZKServiceRegister implements ServiceRegister {
     // curator 提供的zookeeper客户端
     private CuratorFramework client;
-    private serviceCache cache;
-    // zookeeper根路径节点
+    //zookeeper根路径节点
     private static final String ROOT_PATH = "MyRPC";
-    private LoadBalance loadBalance=new ConsistencyHashBalance();
-    // 这里负责zookeeper客户端的初始化，并与zookeeper服务端建立连接
-    public ZkServiceRegister() throws InterruptedException {
+    private static final String RETRY = "CanRetry";
+
+    //负责zookeeper客户端的初始化，并与zookeeper服务端进行连接
+    public ZKServiceRegister(){
         // 指数时间重试
         RetryPolicy policy = new ExponentialBackoffRetry(1000, 3);
         // zookeeper的地址固定，不管是服务提供者还是，消费者都要与之建立连接
@@ -33,45 +28,28 @@ public class ZkServiceRegister implements ServiceRegister {
                 .sessionTimeoutMs(40000).retryPolicy(policy).namespace(ROOT_PATH).build();
         this.client.start();
         System.out.println("zookeeper 连接成功");
-        this.cache=new serviceCache();
-        watchZK watcher=new watchZK(client,cache);
-        watcher.watchToUpdate(ROOT_PATH);
     }
-
-    //服务注册
+    //注册服务到注册中心
     @Override
-    public void register(String serviceName, InetSocketAddress serverAddress){
+    public void register(String serviceName, InetSocketAddress serviceAddress,boolean canRetry) {
         try {
             // serviceName创建成永久节点，服务提供者下线时，不删服务名，只删地址
             if(client.checkExists().forPath("/" + serviceName) == null){
                 client.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/" + serviceName);
             }
             // 路径地址，一个/代表一个节点
-            String path = "/" + serviceName +"/"+ getServiceAddress(serverAddress);
+            String path = "/" + serviceName +"/"+ getServiceAddress(serviceAddress);
             // 临时节点，服务器下线就删除节点
             client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
+            //如果这个服务是幂等性，就增加到节点中
+            if (canRetry){
+                path ="/"+RETRY+"/"+serviceName;
+                client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path);
+            }
         } catch (Exception e) {
             System.out.println("此服务已存在");
         }
     }
-    // 根据服务名返回地址
-    @Override
-    public InetSocketAddress serviceDiscovery(String serviceName) {
-        try {
-            //先在本地找
-            List<String> serviceList=cache.getServcieFromCache(serviceName);
-            if(serviceList==null){
-                serviceList = client.getChildren().forPath("/" + serviceName);
-            }
-
-            String string = loadBalance.balance(serviceList);
-            return parseAddress(string);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     // 地址 -> XXX.XXX.XXX.XXX:port 字符串
     private String getServiceAddress(InetSocketAddress serverAddress) {
         return serverAddress.getHostName() +

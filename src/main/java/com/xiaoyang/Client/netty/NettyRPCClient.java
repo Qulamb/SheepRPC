@@ -3,8 +3,8 @@ package com.xiaoyang.Client.netty;
 import com.xiaoyang.Client.rpcClient.RPCClient;
 import com.xiaoyang.Common.Message.RPCRequest;
 import com.xiaoyang.Common.Message.RPCResponse;
-import com.xiaoyang.Client.serviceCenter.ServiceRegister;
-import com.xiaoyang.Client.serviceCenter.ZkServiceRegister;
+import com.xiaoyang.Client.serviceCenter.ServiceCenter;
+import com.xiaoyang.Client.serviceCenter.ZkServiceCenter;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -23,13 +23,13 @@ public class NettyRPCClient implements RPCClient {
     private static final EventLoopGroup eventLoopGroup;
     private String host;
     private int port;
-    private ServiceRegister serviceRegister;
+    private ServiceCenter serviceCenter;
     public NettyRPCClient(String host, int port) {
         this.host = host;
         this.port = port;
     }
     public NettyRPCClient() throws InterruptedException {
-        this.serviceRegister=new ZkServiceRegister();
+        this.serviceCenter =new ZkServiceCenter();
     }
     // netty客户端初始化，重复使用
     static {
@@ -44,7 +44,7 @@ public class NettyRPCClient implements RPCClient {
      */
     @Override
     public RPCResponse sendRequest(RPCRequest request) {
-        InetSocketAddress address = serviceRegister.serviceDiscovery(request.getInterfaceName());
+        InetSocketAddress address = serviceCenter.serviceDiscovery(request.getInterfaceName());
         host=address.getHostName();
         port=address.getPort();
         try {
