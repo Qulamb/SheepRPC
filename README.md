@@ -82,35 +82,5 @@ NettyServerInitializer：给Netty服务端初始化，在每次连接时执行
 Zookeeper还有Watcher机制，可以监听某一路径的子节点变化，一旦有节点新增或者删除会立即通知所有监听者。如果用redis实现的话要用发布订阅功能，如果发布的时候消费者离线，则接收不到历史变更。这么一对比能看出zookeeper和注册中心的契合度真的非常非常高。
 
 
-#### 软件架构
-软件架构说明
-
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+![Version6](img_5.png)
+在服务发现方法中使用增加了负载均衡，使用轮询策略。
