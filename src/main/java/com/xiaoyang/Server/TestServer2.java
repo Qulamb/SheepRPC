@@ -13,8 +13,8 @@ public class TestServer2 {
         BlogService blogService = new BlogServiceImpl();
         //map存储接口名（一般使用接口的全限定名以保证在分布式环境下的唯一性）和实现类的实例
         ServiceProvider serviceProvider = new ServiceProvider("127.0.0.1",8900);
-        serviceProvider.provideServiceInterface(userService);
-        serviceProvider.provideServiceInterface(blogService);
+        serviceProvider.provideServiceInterface(userService,true);
+        serviceProvider.provideServiceInterface(blogService,true);
 
         //SimpleRPCServer RPCServer = new SimpleRPCServer(serviceProvider.getInterfaceProvider());
         NettyRPCServer rpcServer = new NettyRPCServer(serviceProvider);
