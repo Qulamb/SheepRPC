@@ -3,6 +3,7 @@ package com.xiaoyang.Server.netty;
 import com.xiaoyang.Common.Message.RPCRequest;
 import com.xiaoyang.Common.Message.RPCResponse;
 import com.xiaoyang.Server.provider.ServiceProvider;
+import com.xiaoyang.Server.ratelimit.RateLimit;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,14 @@ public class NettyRPCServerHandler extends SimpleChannelInboundHandler<RPCReques
     RPCResponse getResponse(RPCRequest request) {
         // 得到服务名
         String interfaceName = request.getInterfaceName();
+        //接口限流降级
+        RateLimit rateLimit = serviceProvider.getRateLimitProvider().getRateLimit(interfaceName);
+        if(!rateLimit.getToken()){
+            //令牌获取失败
+            System.out.println("服务限流！！！");
+            return RPCResponse.fail();
+        }
+
         // 得到服务端相应服务实现类
         Object service = serviceProvider.getService(interfaceName);
         // 反射调用方法

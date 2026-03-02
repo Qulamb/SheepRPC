@@ -4,6 +4,8 @@ import com.xiaoyang.Client.serviceCenter.ServiceCenter;
 import com.xiaoyang.Client.serviceCenter.ZkServiceCenter;
 import com.xiaoyang.Server.ServiceRegister.ServiceRegister;
 import com.xiaoyang.Server.ServiceRegister.impl.ZKServiceRegister;
+import com.xiaoyang.Server.ratelimit.RateLimit;
+import com.xiaoyang.Server.ratelimit.provider.RateLimitProvider;
 import lombok.Data;
 
 import java.net.InetSocketAddress;
@@ -15,14 +17,14 @@ public class ServiceProvider {
     private ServiceRegister serviceRegister;
     private int port;
     private String host;
-
-
+    private RateLimitProvider rateLimitProvider;
 
     public ServiceProvider(String host,int port) throws InterruptedException {
         this.host=host;
         this.port=port;
         this.interfaceProvider=new HashMap<>();
         this.serviceRegister=new ZKServiceRegister();
+        this.rateLimitProvider=new RateLimitProvider();
         };
 
 
