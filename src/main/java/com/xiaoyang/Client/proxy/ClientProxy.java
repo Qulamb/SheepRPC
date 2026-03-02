@@ -34,7 +34,7 @@ public class ClientProxy implements InvocationHandler {
                 .paramsTypes(method.getParameterTypes())
                 .build();
 
-
+        //重试机制
         CircuitBreaker circuitBreaker = circuitBreakerProvider.getCircuitBreaker(method.getName());
         if(!circuitBreaker.allowRequest()){
             return null;
