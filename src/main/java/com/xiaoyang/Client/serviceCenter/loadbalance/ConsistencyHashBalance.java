@@ -34,7 +34,9 @@ public class ConsistencyHashBalance implements LoadBalance {
      * @return
      */
     public  String getServer(String node,List<String> serviceList) {
-        init(serviceList);
+        if(shards.isEmpty()){
+            init(serviceList);
+        }
         int hash = getHash(node);
         Integer key = null;
         SortedMap<Integer, String> subMap = shards.tailMap(hash);
@@ -104,6 +106,9 @@ public class ConsistencyHashBalance implements LoadBalance {
 
     @Override
     public String balance(List<String> addressList) {
+        if(addressList==null||addressList.isEmpty()){
+            throw  new IllegalArgumentException("Address list cannot be null or empty");
+        }
         String random= UUID.randomUUID().toString();
         return getServer(random,addressList);
     }
