@@ -1,6 +1,33 @@
-# MyRPC
+<div align="center">
+  <a href="https://github.com/Qulamb/SheepRPC">
+  </a>
 
-> MyRPC 是一个基于 Java 17 手写的 RPC 学习项目，此仓库 README 主要用于存放我在学习 RPC 底层原理过程中的一些思考。
+  <h1 align="center">SheepRPC - 手写 RPC 学习项目</h1>
+  
+  <p align="center">
+    <strong>Java 17 / Netty 通信 / ZooKeeper 注册中心 / 服务治理</strong>
+  </p>
+
+  <p align="center">
+    <a href="https://github.com/Qulamb/SheepRPC">
+      <img src="https://img.shields.io/badge/Java-17-blue" alt="Java 17">
+    </a>
+    <a href="https://github.com/Qulamb/SheepRPC">
+      <img src="https://img.shields.io/badge/Spring%20Boot-4.0.3-brightgreen" alt="Spring Boot">
+    </a>
+    <a href="https://github.com/Qulamb/SheepRPC">
+      <img src="https://img.shields.io/badge/Netty-4.x-orange" alt="Netty">
+    </a>
+    <a href="https://github.com/Qulamb/SheepRPC">
+      <img src="https://img.shields.io/badge/ZooKeeper-Curator%205.7.1-red" alt="ZooKeeper">
+    </a>
+    <a href="https://github.com/Qulamb/SheepRPC">
+      <img src="https://img.shields.io/badge/Maven-Build-blueviolet" alt="Maven">
+    </a>
+  </p>
+</div>
+
+> SheepRPC 是一个基于 Java 17 手写的 RPC 学习项目，此仓库 README 主要用于存放我在学习 RPC 底层原理过程中的一些思考。
 >
 > 这个项目对我来说，并不是“我一开始就已经会完整的 RPC 知识，然后再把它实现出来”，而是“先把最基础的调用链路跑通，再顺着问题一点点往下学”。所以这里的版本迭代，更像是我的学习进度，或者说我当时的理解推进到了哪一步。
 >
